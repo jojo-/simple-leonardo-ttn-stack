@@ -21,7 +21,7 @@ and then opening a web browser and navigate to either
 - <http://0.0.0.0:8080/track_data>;
 - or <http://0.0.0.0:8080/track_htpp>.
 
-To update the database obtained from the TTN Data Integration (<https://binarybeer.data.thethingsnetwork.org/>), you must run the script `update_db.py`. Please make sure that the path to the data base is correct, and that the authorization is set in the `headers` variable. For more convenience, you can add that script to a Cron job.
+To update the database obtained from the TTN Data Integration, you must run the script `update_db.py`. Please make sure that the path to the data base is correct, and that the authorization is set in the `headers` variable. For more convenience, you can add that script to a Cron job.
 
 # Deploying the dashboard in a Debian environment
 
