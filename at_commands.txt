@@ -1,0 +1,1 @@
+# List of AT commands for joining the TTN network.# Note that the command AT is issued twice to be# sure that the module is awake.atatat+pn=1at+fsb=2at+njm=1at+ni=0,<appEui>at+nk=0,<appKey>at+txp=20at+joinat+send=hello

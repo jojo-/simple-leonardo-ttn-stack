@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+
+    <!-- Basic informations -->
+    <meta charset="utf-8">
+    <meta name="description" content="Smart Beer Keg on LoraWan">
+    <meta http-equiv="refresh" content="60">
+    <meta name="author" content="SMART Infrastructure Facility">
+    <title>Binary Beer</title>
+    
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/skeleton.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+ 
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+	<div class="one colunm" style="margin-top: 5%">
+	  <h1>Binary Beer: Smart kegs on LoraWan</h1>
+	</div>
+      </div>
+    </div>
+    
+        
+    <div class="container"> 
+      
+      <!-- Data -->
+      <div class="row">
+        <div class="twelve columns" style="margin-top: 5%">
+          
+          <h2>Last record</h2>
+          <table class="u-full-width">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>ID</th>
+		<th>Value</th>
+		<th>Latitude</th>
+		<th>Longitude</th>
+                <th>RSSI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{record[0]}}</td>
+                <td>{{record[1]}}</td>
+		<td><div id="chart_val" class="gauge"></td>
+		<td>{{record[3]}}</td>
+		<td>{{record[4]}}</td>
+                <td>{{record[5]}}</td>
+              <tr>
+            </tbody>
+          </table>
+      	  
+        </div>
+
+      </div>
+      
+    </div>
+
+     
+      
+    <!-- Graphs -->	          
+    <div class="container">
+      <div class="row">
+        <div class="twelve columns" style="margin-top: 5%">
+	  <h1>Tracking</h1>
+	  <div id="map_kegs" class="map" style="width:100%;height:375px;"></div>
+	</div>
+      </div>
+
+
+      
+    </div>
+    
+  </body>
+  
+  <!-- Google Charts JS start -->
+  
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Weight', {{record[2]}}]
+          ]);
+
+        var options = {
+          max:500,
+          redFrom: 0, redTo: 20,
+          yellowFrom:21, yellowTo: 75,
+          greenFrom:76, greenTo: 500,
+          minorTicks: 5
+          
+         };
+         
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_val'));
+
+        chart.draw(data, options);
+
+      }
+  </script>
+
+  <!-- Load Google Maps Api -->
+  <script src="http://maps.googleapis.com/maps/api/js?key=YOUR_KEY"></script>
+
+  <script type="text/javascript">
+    function initMap() {
+
+      var myLatLng = {lat: {{record[3]}}, lng: {{record[4]}}};
+
+      var map = new google.maps.Map(document.getElementById('map_kegs'), {
+        zoom: 15,
+        center: myLatLng,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      });
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map
+      });
+
+
+      marker.infowindow = new google.maps.InfoWindow({
+                                 content: '<p align=left>date: ' + '{{record[0]}}' +
+                                          '<br>id: ' + '{{record[1]}}' +
+			      	          '<br>weight: ' + '{{record[2]}}' +
+				          '<br>latitude: ' + '{{record[3]}}' +
+				          '<br>longitude: ' + '{{record[4]}}' +
+                                          '<br>rssi: ' + '{{record[5]}}' 
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+				 var marker_map = map;
+				 this.infowindow.open(marker_map, this);
+      });
+
+     
+	
+      marker.setMap(map);
+     
+    }
+      
+    google.maps.event.addDomListener(window, 'load', initMap);
+  </script>
+
+
+  
+</html>
+

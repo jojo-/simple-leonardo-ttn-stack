@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI Emperor
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/uwsgi --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto /var/log/uwsgi/emperor.log --plugin python
+Type=notify
+Restart=always
+NotifyAccess=all
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
+
